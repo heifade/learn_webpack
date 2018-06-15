@@ -7,3 +7,9 @@ setTimeout(() => {
       console.log(e, 1);
     });
 }, 1000);
+
+
+
+class User {
+  
+}

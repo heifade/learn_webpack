@@ -9,7 +9,7 @@ module.exports = async function(env, pars) {
     // mode: "production",
     context: path.resolve(__dirname, "."),
     entry: {
-      index1: "./src/index",
+      index1: "./src/index"
       // index2: "./src/index2"
     },
     output: {
@@ -34,7 +34,18 @@ module.exports = async function(env, pars) {
     },
     optimization: {
       // minimize: true,
-      // minimizer: [new UglifyJsPlugin()],
+      minimizer: [
+        new UglifyJsPlugin({
+          parallel: true, // CPU 核数 - 1
+          sourceMap: true,
+          uglifyOptions: {
+            output: {
+              commons: false,
+              // beautify: false,
+            }
+          }
+        })
+      ],
       splitChunks: {
         chunks: "all",
         // automaticNameDelimiter: "_",
@@ -49,28 +60,28 @@ module.exports = async function(env, pars) {
             priority: -20,
             reuseExistingChunk: true
           },
-        //   // 将node_modules下 异步加载的模块打包到 vendor-async.js 里
-        //   vendor_async: {
-        //     test: /node_modules/,
-        //     chunks: "async",
-        //     name: "vendor-async",
-        //     priority: 10,
-        //     enforce: true, // 强制执行(即使没有达到大小)
-        //   },
-        //   // 将node_modules下 非异步加载的模块打包到 vendor-initial.js 里
-        //   vendor_init: {
-        //     test: /node_modules/,
-        //     chunks: "initial",
-        //     name: "vendor-initial",
-        //     priority: 10,
-        //     enforce: true, // 强制执行(即使没有达到大小)
-        //   },
-        // 将 异步加载的模块打包到 commons-async.js 里
+          //   // 将node_modules下 异步加载的模块打包到 vendor-async.js 里
+          //   vendor_async: {
+          //     test: /node_modules/,
+          //     chunks: "async",
+          //     name: "vendor-async",
+          //     priority: 10,
+          //     enforce: true, // 强制执行(即使没有达到大小)
+          //   },
+          //   // 将node_modules下 非异步加载的模块打包到 vendor-initial.js 里
+          //   vendor_init: {
+          //     test: /node_modules/,
+          //     chunks: "initial",
+          //     name: "vendor-initial",
+          //     priority: 10,
+          //     enforce: true, // 强制执行(即使没有达到大小)
+          //   },
+          // 将 异步加载的模块打包到 commons-async.js 里
           commons_async: {
             name: "commons-async",
             chunks: "async",
             // minChunks: 2
-            enforce: true, // 强制执行(即使没有达到大小)
+            enforce: true // 强制执行(即使没有达到大小)
           },
           // commons_init: {
           //   name: "commons-init",
@@ -80,8 +91,10 @@ module.exports = async function(env, pars) {
           // },
           default: {}
         }
+      },
+      runtimeChunk: {
+        name: entrypoint => `runtime-${entrypoint.name}`,
       }
-      // runtimeChunk: true,
     },
     plugins: [
       new HttpWebpackPlugin({
@@ -90,7 +103,7 @@ module.exports = async function(env, pars) {
         template: path.resolve(__dirname, "./public/index.html"),
         meta: { viewport: "width=device-width, initial-scale=1, shrink-to-fit=no" },
         // chunks: ["index1"],
-        hash: true,
+        hash: true
       })
       // new HttpWebpackPlugin({
       //   title: "learn webpack",
