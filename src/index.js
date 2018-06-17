@@ -1,4 +1,5 @@
 import { split } from "lodash";
+import { f1 } from "./treeShake";
 
 setTimeout(() => {
   import("./asyncModule.js")
@@ -22,3 +23,6 @@ setTimeout(() => {
       console.log(e);
     });
 }, 1000);
+
+
+console.log(f1());

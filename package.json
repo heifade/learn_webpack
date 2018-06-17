@@ -20,7 +20,7 @@
   },
   "scripts": {
     "start": "webpack-dev-server --config webpack.config.js --open --port 8080",
-    "build": "node ./tools/clearDist.js && webpack --config webpack.config.js"
+    "build": "node ./tools/clearDist.js && webpack --config webpack.config.js ---display-used-exports"
   },
   "repository": {
     "type": "git",
